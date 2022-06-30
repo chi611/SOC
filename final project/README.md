@@ -5,3 +5,17 @@
 
 
 操作影片:https://www.youtube.com/watch?v=M3W39Vw_WYc
+
+組員貢獻:
+    陳陽棋:
+    1.乒乓球FPGA code撰寫
+    2.乒乓球IP打包
+    3.中斷服務程序
+    4.SDK C程式撰寫
+    林芳平:
+    1.乒乓球網頁UI設計
+    2.UART接收
+    
+    謝秉君:
+    1.FPGA UART測試
+    2.FPGA GPIO
