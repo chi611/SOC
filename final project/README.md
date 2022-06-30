@@ -7,24 +7,25 @@
 操作影片:https://www.youtube.com/watch?v=M3W39Vw_WYc
 
 組員貢獻:
-陳陽棋:
 
-1.乒乓球FPGA code撰寫
+    陳陽棋:
 
-2.乒乓球IP打包
+    1.乒乓球FPGA code撰寫
 
-3.中斷服務程序
+    2.乒乓球IP打包
 
-4.SDK C程式撰寫
+    3.中斷服務程序
 
-林芳平:
+    4.SDK C程式撰寫
 
-1.乒乓球網頁UI設計
+    林芳平:
 
-2.UART接收
+    1.乒乓球網頁UI設計
+
+    2.UART接收
     
-謝秉君:
+    謝秉君:
 
-1.FPGA UART測試
+    1.FPGA UART測試
 
-2.FPGA GPIO傳至Arduino再傳至PC測試
+    2.FPGA GPIO傳至Arduino再傳至PC測試
