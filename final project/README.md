@@ -1,1 +1,1 @@
-乒乓球遊戲同步顯示於PC UI上![image](https://user-images.githubusercontent.com/76472326/176654284-10742dc9-9cc3-4a8f-b4cb-48a73207e1d7.png)
+![image](https://user-images.githubusercontent.com/76472326/176654284-10742dc9-9cc3-4a8f-b4cb-48a73207e1d7.png)
