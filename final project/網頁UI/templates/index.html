@@ -1,0 +1,229 @@
+<html>
+
+<head>
+    <script src="./static/lib/assets/jquery.min.js"></script>
+    <!-- <script src="./static/lib/assets/bootstrap-4.6.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./static/lib/assets/bootstrap-4.6.0/css/bootstrap.min.css"> -->
+    <script src="./static/lib/request.js"></script>
+	<style>
+		img {
+			height: 200px;
+			margin-top: 30px;
+		}
+		.adminonly {
+			pointer-events: none;
+		}
+	</style>
+	<script>
+	</script>
+</head>
+<style>
+	.flex_container {
+		display:flex;
+		flex-flow:row wrap;
+		justify-content: space-around;
+		height:30vh;
+		margin:2%;
+	}
+	.flex_box {
+		display: flex;
+		justify-content: center;
+		align-items: center; 
+		height: 100%;
+	}
+
+	.controller_item {
+		display: flex;
+		flex-direction: column;
+	}
+	.controller_text {
+		font-size: x-large;
+		font-family: Arial;
+	}
+	
+	.controller_btn {		
+		font-size: x-large;
+		font-family: Arial;
+		padding: 10px;
+		height: 100%;
+		margin-top: 10px;
+		border:0;
+		color:#fff;
+		border-radius:10px;
+		cursor:pointer;
+	}
+	#connectBtn {
+		background-color:#4286f3;
+	}
+	#closeBtn {
+		background-color:#fa3d3d;
+	}
+	#connectBtn:disabled,  #closeBtn:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.signal_name {
+		font-size: large;
+		font-family: Arial;
+	}
+	.square {
+		width: 3vw;
+		height: 3vw;
+		background: rgb(87, 87, 87);
+		margin: auto;
+	}
+	.circle {
+		width: 3vw;
+		height: 3vw;
+		border-radius:999em;
+		background: rgb(87, 87, 87);
+		margin: auto;
+	}
+	.test {
+		border:solid 5px rgb(58, 216, 53);
+		background-color:rgb(143, 230, 140);
+	}
+	
+</style>
+<body>
+	<div class="flex_container">
+		<div class="flex_box" style="width: 20vw; border:solid 5px rgb(255, 223, 79);background-color:rgb(255, 233, 136);" id="controller_box">
+			<div style="text-align: center;">
+				<label for="port" class="controller_item controller_text">Port</label>
+				<select style="margin-bottom: 10px;width: 15vw;height: 4vh;" class="controller_text" id="port">
+					<option selected disabled>請選擇可用的連接埠</option>
+				</select>
+				<label for="baudRate" class="controller_item controller_text">Baud Rate</label>
+				<input type="number" style="margin-bottom: 10px;width: 15vw;height: 4vh;" class="controller_text" id="baudRate">
+				<div style="display: flex; flex-flow:row nowrap; justify-content: space-around;">
+					<button type="button" class="controller_btn" id="connectBtn">Connect</button>
+					<button type="button" class="controller_btn" id="closeBtn" disabled>Close</button>
+				</div>
+			</div>
+		</div>
+		<div class="flex_box"  style="width: 60vw; flex-flow:row nowrap; justify-content: space-around; border:solid 5px rgb(128, 128, 128);background-color:rgb(199, 199, 199);">
+			<!-- <div style="text-align:center;">
+				<label class="signal_name">Left Player</label>
+				<div style="height: 10px;"></div>
+				<div class="square" id="signal_0"></div>
+			</div> -->
+			<div style="text-align:center;">
+				<label class="signal_name">LED_0</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_0"></div>
+			</div>
+			<div style="text-align:center;">
+				<label class="signal_name">LED_1</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_1"></div>
+			</div>
+			<div style="text-align:center;">
+				<label class="signal_name">LED_2</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_2"></div>
+			</div>
+			<div style="text-align:center;">
+				<label class="signal_name">LED_3</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_3"></div>
+			</div>
+			<div style="text-align:center;">
+				<label class="signal_name">LED_4</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_4"></div>
+			</div>
+			<div style="text-align:center;">
+				<label class="signal_name">LED_5</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_5"></div>
+			</div>
+			<div style="text-align:center;">
+				<label class="signal_name">LED_6</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_6"></div>
+			</div>
+			<div style="text-align:center;">
+				<label class="signal_name">LED_7</label>
+				<div style="height: 10px;"></div>
+				<div class="circle" id="signal_7"></div>
+			</div>
+			<!-- <div style="text-align:center;">
+				<label class="signal_name">Right Player</label>
+				<div style="height: 10px;"></div>
+				<div class="square" id="signal_9"></div>
+			</div> -->
+		</div>
+		<textarea id="msg_board" rows="13" cols="40" readonly style="width: 88vw; height: 30vh; border:double 5px rgb(128, 128, 128); margin-top: 30px; font-size: large;"></textarea>
+	</div>
+</body>
+<script>
+	var Timer
+	GetUsefulCOM((res)=>{
+		for(let index in res['COM']){
+			let port = res['COM'][index]
+			$("#port").append(`<option value='${port}'>${port}</option>`);
+		}
+	}, (err)=>{
+		$("#msg_board").text($("#msg_board").val() + "搜尋可連接的COM埠時發生錯誤\n")
+	})
+	$("#baudRate").val(115200)
+	$("#connectBtn").click(function(){
+		if (!($("#baudRate").val()) || !($("#port").val())){
+			alert("請填寫連接埠(Port)和鮑率(Baud Rate)")
+			return
+		}
+		data = {
+			"port": $("#port").val(),
+			"baudRate": $("#baudRate").val()
+		}
+		ConnectUART(data, (res)=>{
+			$("#connectBtn").attr("disabled", true)
+			$("#closeBtn").removeAttr("disabled")
+			$("#controller_box").css("border", "solid 5px rgb(58, 216, 53)")
+			$("#controller_box").css("background-color", "rgb(143, 230, 140)")
+			$("#msg_board").text($("#msg_board").val() + "連線成功\n")
+			Timer = setInterval("getData()", 50)
+		}, (err)=> {
+			$("#msg_board").text($("#msg_board").val() + "連線失敗\n")
+		})
+	})
+	$("#closeBtn").click(function(){
+		CloseUART((res)=>{
+			clearInterval(Timer)
+			$("#closeBtn").attr("disabled", true)
+			$("#connectBtn").removeAttr("disabled")
+			$("#controller_box").css("border", "solid 5px rgb(255, 223, 79)")
+			$("#controller_box").css("background-color", "rgb(255, 233, 136)")
+			for (let i = 0; i < 10; i++) {
+				$("#signal_"+i).css("background", "rgb(87, 87, 87)")
+			}
+			$("#msg_board").text($("#msg_board").val() + "已關閉連線\n")
+		}, (err)=> {
+			$("#msg_board").text($("#msg_board").val() + "異常錯誤\n")
+		})
+	})
+	function getData(){
+		GetUARTData((res)=>{
+			let result = res['data']
+
+			for(let count in result) {
+				console.log(count)
+				if (result[count] == 1){
+					$("#signal_"+count).css("background", "rgb(250, 50, 50)")
+				}else{
+					$("#signal_"+count).css("background", "rgb(150, 150, 150)")
+				}
+			}
+			$("#msg_board").text($("#msg_board").val() + result + "\n")
+		}, (err)=>{
+			console.log("error")
+			//$("#msg_board").text($("#msg_board").val() + "獲得未知資料，即將關閉連線\n")
+			//$("#closeBtn").trigger("click");
+		})
+	}
+	$(window).on('beforeunload', function (){
+		$("#closeBtn").trigger("click");
+	});
+</script>
+</html>
